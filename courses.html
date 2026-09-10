@@ -33,13 +33,13 @@
     .list-panel { position:sticky; top:22px; }.list-top { background:var(--green); color:white; padding:27px 28px 23px; }.list-top h2 { font-family:Georgia,serif; font-size:1.65rem; font-weight:500; }.list-top p { color:#cfe0cf; margin:7px 0 0; font-size:.87rem; }.progress { height:6px; background:rgba(255,255,255,.23); border-radius:9px; margin-top:18px; overflow:hidden; }.progress span { display:block; height:100%; width:0; border-radius:inherit; background:#ffbf8c; transition:width .2s; }
     #shopping-list { padding:4px 28px 18px; }.category { padding:18px 0 8px; border-bottom:1px solid var(--line); }.category:last-child { border-bottom:0; }.category-title { color:var(--green); text-transform:uppercase; letter-spacing:.1em; font-size:.68rem; font-weight:850; margin:0 0 8px; }.line { display:flex; gap:10px; align-items:center; padding:7px 0; font-size:.9rem; }.line input { appearance:none; flex:0 0 19px; width:19px; height:19px; border:1.5px solid #b8c3b9; border-radius:6px; margin:0; }.line input:checked { background:var(--green); border-color:var(--green); box-shadow:inset 0 0 0 4px white; }.line:has(input:checked) span { color:#98a39a; text-decoration:line-through; }
     .empty { color:var(--muted); text-align:center; padding:45px 12px 55px; font-size:.92rem; }.actions { display:flex; padding:14px 28px 25px; gap:9px; }.secondary { border:1px solid var(--line); color:var(--ink); background:white; border-radius:10px; padding:10px 12px; font-size:.82rem; font-weight:650; }.secondary:last-child { margin-left:auto; }
-    dialog { border:0; border-radius:22px; padding:0; box-shadow:0 24px 70px rgba(20,30,22,.3); max-width:min(650px,calc(100% - 28px)); background:var(--paper); }.modal { padding:26px; }.modal h2 { font-family:Georgia,serif; font-size:1.6rem; }.modal p { color:var(--muted); font-size:.88rem; line-height:1.5; }.modal input { width:100%; border:1px solid var(--line); background:white; border-radius:10px; padding:11px 12px; outline-color:var(--green); font-size:.84rem; }.modal-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:14px; }.save { border:0; border-radius:10px; background:var(--green); color:white; padding:10px 15px; font-weight:700; }
+    dialog { border:0; border-radius:22px; padding:0; box-shadow:0 24px 70px rgba(20,30,22,.3); max-width:min(650px,calc(100% - 28px)); background:var(--paper); }.modal { padding:26px; }.modal h2 { font-family:Georgia,serif; font-size:1.6rem; }.modal p { color:var(--muted); font-size:.88rem; line-height:1.5; }.modal textarea { width:100%; height:260px; border:1px solid var(--line); border-radius:12px; padding:12px; resize:vertical; line-height:1.4; font-family:ui-monospace,monospace; font-size:.78rem; }.modal-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:14px; }.save { border:0; border-radius:10px; background:var(--green); color:white; padding:10px 15px; font-weight:700; }
     @media(max-width:800px) { .shell { padding:28px 15px 42px; } header { align-items:start; flex-direction:column; } main { grid-template-columns:1fr; } .list-panel { position:static; } } @media(max-width:430px) { .meal-grid { grid-template-columns:1fr; } .panel-head,.recurring,#shopping-list,.actions { padding-left:18px; padding-right:18px; } }
   </style>
 </head>
 <body>
   <div class="shell">
-    <header><div><p class="eyebrow">Planification maison</p><h1>Les courses, sans y penser.</h1><p class="week" id="week-label"></p></div><button class="pill" id="edit-menu">⌘ Source des repas</button></header>
+    <header><div><p class="eyebrow">Planification maison</p><h1>Les courses, sans y penser.</h1><p class="week" id="week-label"></p></div><button class="pill" id="edit-menu">✎ Modifier mes repas</button></header>
     <main>
       <section class="panel"><div class="panel-head"><div><h2>Quels repas vous font envie ?</h2><p>Cliquez sur les plats prévus cette semaine.</p></div><span id="meal-count">0 repas</span></div><div class="meal-grid" id="meal-grid"></div>
         <div class="recurring"><h3>Les indispensables</h3><p>Ajoutez ce que vous achetez chaque semaine.</p><div class="quick-items" id="recurring-items"></div><form class="add-row" id="add-form"><input id="new-item" aria-label="Nouvel indispensable" placeholder="ex. Sacs poubelle"><button title="Ajouter" aria-label="Ajouter">+</button></form></div>
@@ -47,17 +47,25 @@
       <aside class="panel list-panel"><div class="list-top"><h2>Votre liste</h2><p id="list-subtitle">Choisissez des repas pour commencer</p><div class="progress"><span id="progress"></span></div></div><div id="shopping-list"></div><div class="actions"><button class="secondary" id="uncheck">Tout décocher</button><button class="secondary" id="print">Imprimer</button></div></aside>
     </main>
   </div>
-  <dialog id="editor"><form class="modal" method="dialog"><h2>Source des propositions</h2><p>Les repas sont chargés depuis le fichier <strong>data/repas.json</strong> du dépôt GitHub. Modifiez ce fichier sur GitHub pour mettre à jour le menu de tout le monde. Vous pouvez aussi renseigner l’URL brute (<em>raw</em>) d’un autre fichier JSON hébergé sur GitHub.</p><input id="menu-url" aria-label="URL du fichier JSON des repas" placeholder="https://raw.githubusercontent.com/.../repas.json"><p>Le fichier doit contenir un tableau de repas, avec <code>name</code>, <code>icon</code>, <code>note</code> et <code>items</code>. Le menu est rechargé dès l’enregistrement.</p><div class="modal-actions"><button class="secondary" value="cancel">Annuler</button><button class="save" value="default" id="restore">Utiliser le fichier du dépôt</button><button class="save" value="save" id="save-menu">Charger ce JSON</button></div></form></dialog>
+  <dialog id="editor"><form class="modal" method="dialog"><h2>Personnaliser les repas</h2><p>Modifiez directement les données ci-dessous. Chaque repas contient un nom, une icône et des ingrédients classés par rayon. Vos changements restent enregistrés dans ce navigateur.</p><textarea id="menu-json" spellcheck="false"></textarea><div class="modal-actions"><button class="secondary" value="cancel">Annuler</button><button class="save" value="default" id="restore">Réinitialiser</button><button class="save" value="save" id="save-menu">Enregistrer</button></div></form></dialog>
   <script>
+    const defaultMeals = [
+      { name:'Poulet rôti & légumes', icon:'🍗', note:'simple et réconfortant', items:{'Viandes & poissons':['4 cuisses de poulet'],'Fruits & légumes':['Pommes de terre','Carottes','Oignons'],'Épicerie':['Herbes de Provence']} },
+      { name:'Saumon, riz & brocoli', icon:'🐟', note:'un dîner frais', items:{'Viandes & poissons':['Pavés de saumon'],'Fruits & légumes':['Brocoli','Citron'],'Épicerie':['Riz basmati','Sauce soja']} },
+      { name:'Pâtes bolognaise', icon:'🍝', note:'le grand classique', items:{'Viandes & poissons':['Bœuf haché'],'Fruits & légumes':['Oignon','Ail'],'Épicerie':['Spaghetti','Coulis de tomate','Concentré de tomate'],'Produits laitiers':['Parmesan']} },
+      { name:'Curry de pois chiches', icon:'🫕', note:'végétarien et doux', items:{'Fruits & légumes':['Patate douce','Épinards','Oignon'],'Épicerie':['Pois chiches','Lait de coco','Pâte de curry','Riz']} },
+      { name:'Tacos maison', icon:'🌮', note:'à composer en famille', items:{'Viandes & poissons':['Poulet émincé'],'Fruits & légumes':['Avocat','Tomates','Salade'],'Épicerie':['Galettes tacos','Haricots rouges','Épices mexicaines'],'Produits laitiers':['Fromage râpé','Crème fraîche']} },
+      { name:'Quiche aux légumes', icon:'🥧', note:'parfaite avec une salade', items:{'Fruits & légumes':['Courgette','Poireau','Salade verte'],'Épicerie':['Pâte brisée'],'Produits laitiers':['Œufs','Crème fraîche','Fromage râpé']} },
+      { name:'Burgers & frites', icon:'🍔', note:'la soirée plaisir', items:{'Viandes & poissons':['Steaks hachés'],'Fruits & légumes':['Pommes de terre','Tomates','Oignons'],'Épicerie':['Pains burger','Ketchup'],'Produits laitiers':['Cheddar']} },
+      { name:'Dahl de lentilles', icon:'🥣', note:'rapide et parfumé', items:{'Fruits & légumes':['Carottes','Oignon','Coriandre'],'Épicerie':['Lentilles corail','Lait de coco','Curry','Pain naan']} }
+    ];
     const baseRecurring = ['Bananes','Pommes','Lait','Pain','Œufs','Café'];
-    const defaultMenuUrl = './data/repas.json';
-    let menuUrl = localStorage.getItem('courses-menu-url') || defaultMenuUrl;
-    let meals = [];
+    let meals = JSON.parse(localStorage.getItem('courses-meals') || 'null') || defaultMeals;
     let selected = new Set(JSON.parse(localStorage.getItem('courses-selected') || '[]'));
     let recurring = JSON.parse(localStorage.getItem('courses-recurring') || 'null') || baseRecurring;
     let activeRecurring = new Set(JSON.parse(localStorage.getItem('courses-active-recurring') || '[]'));
     const categoryFor = item => /lait|pain|œuf|fromage|crème/i.test(item) ? (/pain/i.test(item) ? 'Boulangerie' : 'Produits laitiers') : /banane|pomme|fruit|légume/i.test(item) ? 'Fruits & légumes' : 'Maison & quotidien';
-    const persist = () => { localStorage.setItem('courses-selected',JSON.stringify([...selected])); localStorage.setItem('courses-recurring',JSON.stringify(recurring)); localStorage.setItem('courses-active-recurring',JSON.stringify([...activeRecurring])); };
+    const persist = () => { localStorage.setItem('courses-meals',JSON.stringify(meals)); localStorage.setItem('courses-selected',JSON.stringify([...selected])); localStorage.setItem('courses-recurring',JSON.stringify(recurring)); localStorage.setItem('courses-active-recurring',JSON.stringify([...activeRecurring])); };
     function render() {
       document.querySelector('#meal-grid').innerHTML = meals.map((m,i) => `<button class="meal ${selected.has(i)?'selected':''}" data-id="${i}"><span class="meal-icon">${m.icon}</span><strong>${m.name}</strong><small>${m.note || 'Repas maison'}</small><span class="tick">✓</span></button>`).join('');
       document.querySelector('#recurring-items').innerHTML = recurring.map((x,i) => `<button class="quick-item ${activeRecurring.has(x)?'on':''}" data-recurring="${i}">${activeRecurring.has(x)?'✓ ':''}${x}</button>`).join('');
@@ -77,12 +85,11 @@
     document.querySelector('#shopping-list').addEventListener('change',updateProgress);
     document.querySelector('#add-form').addEventListener('submit',e=>{e.preventDefault();const input=document.querySelector('#new-item'), value=input.value.trim();if(value&&!recurring.includes(value)){recurring.push(value);activeRecurring.add(value);input.value='';render();}});
     document.querySelector('#uncheck').onclick=()=>{document.querySelectorAll('.line input').forEach(x=>x.checked=false);updateProgress();}; document.querySelector('#print').onclick=()=>window.print();
-    async function loadMeals(url) { try { const response=await fetch(url,{cache:'no-store'}); const value=await response.json(); if(!response.ok || !Array.isArray(value)) throw Error(); meals=value; selected.clear(); render(); } catch { meals=[]; selected.clear(); render(); document.querySelector('#list-subtitle').textContent='Impossible de charger le fichier de repas'; } }
-    const editor=document.querySelector('#editor'); document.querySelector('#edit-menu').onclick=()=>{document.querySelector('#menu-url').value=menuUrl;editor.showModal();};
-    document.querySelector('#save-menu').onclick=e=>{const value=document.querySelector('#menu-url').value.trim();if(!value){e.preventDefault();alert('Indiquez l’URL du fichier JSON.');return;} menuUrl=value;localStorage.setItem('courses-menu-url',menuUrl);loadMeals(menuUrl);};
-    document.querySelector('#restore').onclick=e=>{e.preventDefault(); menuUrl=defaultMenuUrl;localStorage.removeItem('courses-menu-url');document.querySelector('#menu-url').value=menuUrl;loadMeals(menuUrl);};
+    const editor=document.querySelector('#editor'); document.querySelector('#edit-menu').onclick=()=>{document.querySelector('#menu-json').value=JSON.stringify(meals,null,2);editor.showModal();};
+    document.querySelector('#save-menu').onclick=e=>{try { const value=JSON.parse(document.querySelector('#menu-json').value); if(!Array.isArray(value)) throw Error(); meals=value;selected.clear();render(); } catch { e.preventDefault(); alert('Le format n’est pas valide. Vérifiez le JSON.'); }};
+    document.querySelector('#restore').onclick=e=>{e.preventDefault(); document.querySelector('#menu-json').value=JSON.stringify(defaultMeals,null,2);};
     document.querySelector('#week-label').textContent = `Semaine du ${new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'long'}).format(new Date())}`;
-    loadMeals(menuUrl);
+    render();
   </script>
 </body>
 </html>
