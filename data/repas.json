@@ -1,12 +1,10 @@
 [
   {
-    "name": "Poulet rôti & légumes",
+    "name": "Nuggets ratatouille",
     "icon": "🍗",
-    "note": "simple et réconfortant",
     "items": {
-      "Viandes & poissons": ["4 cuisses de poulet"],
-      "Fruits & légumes": ["Pommes de terre", "Carottes", "Oignons"],
-      "Épicerie": ["Herbes de Provence"]
+      "Viandes & poissons": ["Nuggets"],
+      "Fruits & légumes": ["Ratatouille"],
     }
   },
   {
