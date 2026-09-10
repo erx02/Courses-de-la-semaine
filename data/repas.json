@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Poulet rôti & légumes",
+    "icon": "🍗",
+    "note": "simple et réconfortant",
+    "items": {
+      "Viandes & poissons": ["4 cuisses de poulet"],
+      "Fruits & légumes": ["Pommes de terre", "Carottes", "Oignons"],
+      "Épicerie": ["Herbes de Provence"]
+    }
+  },
+  {
+    "name": "Saumon, riz & brocoli",
+    "icon": "🐟",
+    "note": "un dîner frais",
+    "items": {
+      "Viandes & poissons": ["Pavés de saumon"],
+      "Fruits & légumes": ["Brocoli", "Citron"],
+      "Épicerie": ["Riz basmati", "Sauce soja"]
+    }
+  },
+  {
+    "name": "Pâtes bolognaise",
+    "icon": "🍝",
+    "note": "le grand classique",
+    "items": {
+      "Viandes & poissons": ["Bœuf haché"],
+      "Fruits & légumes": ["Oignon", "Ail"],
+      "Épicerie": ["Spaghetti", "Coulis de tomate", "Concentré de tomate"],
+      "Produits laitiers": ["Parmesan"]
+    }
+  },
+  {
+    "name": "Curry de pois chiches",
+    "icon": "🫕",
+    "note": "végétarien et doux",
+    "items": {
+      "Fruits & légumes": ["Patate douce", "Épinards", "Oignon"],
+      "Épicerie": ["Pois chiches", "Lait de coco", "Pâte de curry", "Riz"]
+    }
+  },
+  {
+    "name": "Tacos maison",
+    "icon": "🌮",
+    "note": "à composer en famille",
+    "items": {
+      "Viandes & poissons": ["Poulet émincé"],
+      "Fruits & légumes": ["Avocat", "Tomates", "Salade"],
+      "Épicerie": ["Galettes tacos", "Haricots rouges", "Épices mexicaines"],
+      "Produits laitiers": ["Fromage râpé", "Crème fraîche"]
+    }
+  },
+  {
+    "name": "Quiche aux légumes",
+    "icon": "🥧",
+    "note": "parfaite avec une salade",
+    "items": {
+      "Fruits & légumes": ["Courgette", "Poireau", "Salade verte"],
+      "Épicerie": ["Pâte brisée"],
+      "Produits laitiers": ["Œufs", "Crème fraîche", "Fromage râpé"]
+    }
+  },
+  {
+    "name": "Burgers & frites",
+    "icon": "🍔",
+    "note": "la soirée plaisir",
+    "items": {
+      "Viandes & poissons": ["Steaks hachés"],
+      "Fruits & légumes": ["Pommes de terre", "Tomates", "Oignons"],
+      "Épicerie": ["Pains burger", "Ketchup"],
+      "Produits laitiers": ["Cheddar"]
+    }
+  },
+  {
+    "name": "Dahl de lentilles",
+    "icon": "🥣",
+    "note": "rapide et parfumé",
+    "items": {
+      "Fruits & légumes": ["Carottes", "Oignon", "Coriandre"],
+      "Épicerie": ["Lentilles corail", "Lait de coco", "Curry", "Pain naan"]
+    }
+  }
+]
